@@ -1,0 +1,45 @@
+pipeline {
+    agent {label'agent-1'}
+    stages {
+        stage('clone') {
+            steps {
+                script{
+                    properties([pipelineTriggers([pollSCM('')])])
+                }
+                git url:'https://github.com/Naresh100893/react_django_demo_app.git',branch:'main'
+                echo "code-cloned"
+            }
+        }
+
+
+        stage('build') {
+            steps {
+                sh "docker build . -t naresh7724/django-todo-app:latest"
+                echo "build done"
+            }
+        }
+
+
+        stage('login') {
+            steps {
+                withCredentials([string(credentialsId: 'dockerhubpass-id', variable: 'dockerhubpassword')]) {
+                    sh 'docker login -u naresh7724 -p ${dockerhubpassword}'
+                    echo "docker-logged-in"
+                }
+
+            }
+        }
+        stage('push') {
+            steps{
+                sh "docker push naresh7724/django-todo-app:latest"
+                echo "docker-image-pushed"
+            }
+        }
+        stage('deploy') {
+            steps{
+                sh 'docker-compose down && docker-compose up -d'
+                echo 'deployed'
+            }
+        }
+    }
+}
