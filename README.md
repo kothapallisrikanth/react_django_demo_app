@@ -4,5 +4,4 @@ A demo app for React and Django Deployment
 docker-compose down
 docker-compose up -d
 
-we are adding extra line to check whther webhook working or not, this is for srikantha nd tarun
-this is second edit in the file
+im writing this on 31st october 2023
