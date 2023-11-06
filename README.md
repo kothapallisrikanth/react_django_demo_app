@@ -5,3 +5,6 @@ docker-compose down
 docker-compose up -d
 
 im writing this on 31st october 2023
+
+
+writing this on 6th november
